@@ -1,0 +1,10 @@
+#dropbox {
+    border:1px dashed #ccc;
+    min-height:200px;
+    min-width:200px;
+    max-width: 500px;
+}
+
+#dropbox .imageHolder img {
+    max-width: 800px;
+}
