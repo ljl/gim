@@ -40,7 +40,6 @@
 	};
 
     function paste(e) {
-        console.log("Stuffs about to go down yo");
         files = itemsToFileArray(e.clipboardData.items);
         if (files === null || files === undefined) {
             opts.error(errors[0]);

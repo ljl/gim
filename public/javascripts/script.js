@@ -1,4 +1,5 @@
 $(function(){
+
 	var dropbox = $('#dropbox'),
 		message = $('.message', dropbox);
 	
@@ -11,7 +12,6 @@ $(function(){
 		
 		uploadFinished:function(i,file,response){
 			$.data(file).addClass('done');
-			// response is the JSON object that post_file.php returns
 		},
 		
     	error: function(err, file) {

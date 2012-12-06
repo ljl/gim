@@ -4,6 +4,8 @@
 
 # Home page
 GET     /                                       Application.index
+WS      /hello                                  WebSocketTest.hello
+WS      /image                                  WebSocketTest.image
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

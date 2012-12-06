@@ -5,8 +5,20 @@
     #{script 'jquery.filedrop.js'/}
 #{/set}
 
-<h1>gim</h1>
+<h1>gimple</h1>
 
-<div id="dropbox">
+<div id="dropbox" tabindex="0">
     <span class="message">Lim inn eller slipp her</span>
 </div>
+
+
+<dl>
+    #{list items:entries, as:'entry' }
+        <dt>
+            ${entry.name}
+        </dt>
+        <dd>
+            <img src="@{ImageController.displayImage(entry.id)}"/>
+        </dd>
+    #{/list}
+</dl>

@@ -5,6 +5,14 @@
     max-width: 500px;
 }
 
+#dropbox:focus {
+    border-radius: 2px;
+}
+
 #dropbox .imageHolder img {
     max-width: 800px;
+}
+
+dd img {
+    width: 250px;
 }
