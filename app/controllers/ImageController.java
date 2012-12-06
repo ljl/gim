@@ -1,17 +1,11 @@
 package controllers;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import models.ImageEntry;
 import play.Logger;
@@ -39,6 +33,7 @@ public class ImageController extends Controller
         }
     }
 
+    @Deprecated
     public static void download(String imageUrl)
         throws IOException
     {

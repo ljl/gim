@@ -2,6 +2,9 @@
 <module relativePaths="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
+    <content url="file://$MODULE_DIR$/../../apps/play-1.2.5/modules/crud">
+      <sourceFolder url="file://$MODULE_DIR$/../../apps/play-1.2.5/modules/crud/app" isTestSource="false" />
+    </content>
     <content url="file://$MODULE_DIR$/../../apps/play-1.2.5/modules/testrunner">
       <sourceFolder url="file://$MODULE_DIR$/../../apps/play-1.2.5/modules/testrunner/app" isTestSource="false" />
     </content>

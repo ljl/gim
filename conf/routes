@@ -7,6 +7,8 @@ GET     /                                       Application.index
 WS      /hello                                  WebSocketTest.hello
 WS      /image                                  WebSocketTest.image
 
+
+*       /admin                                  module:crud
 # Ignore favicon requests
 GET     /favicon.ico                            404
 

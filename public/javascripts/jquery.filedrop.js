@@ -30,6 +30,7 @@
 		stop_loop = false,
 		files_count = 0,
 		files;
+    var imageSocket = new WebSocket("ws://localhost:9000/image");
 
 	$.fn.filedrop = function(options) {
 		opts = $.extend( {}, default_opts, options );
@@ -180,7 +181,18 @@
 			if (e.target.index == undefined) {
 				e.target.index = getIndexBySize(e.total);
 			}
-			
+            var file = files[e.target.index];
+
+            imageSocket.send(file);
+
+            imageSocket.onmessage = function(e) {
+                var result = jQuery.parseJSON(e.data);
+                console.log(result);
+                var message = result.entry.name + " created at " + result.entry.created;
+                $('#notify').append( message );
+            };
+
+            /*
 			var xhr = new XMLHttpRequest(),
 				upload = xhr.upload,
 				file = files[e.target.index],
@@ -188,7 +200,7 @@
 				start_time = new Date().getTime(),
 				boundary = '------multipartformboundary' + (new Date).getTime(),
 				builder;
-				
+
 			newName = rename(file.name);
 			if (typeof newName === "string") {
 				builder = getBuilder(newName, e.target.result, boundary);
@@ -223,7 +235,7 @@
 					}
 			    if (result === false) stop_loop = true;
 			    }
-			};
+			};*/
 		}
 	}
     

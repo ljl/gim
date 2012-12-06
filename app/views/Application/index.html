@@ -6,19 +6,25 @@
 #{/set}
 
 <h1>gimple</h1>
-
-<div id="dropbox" tabindex="0">
+<p class="lead">the simple image uploader</p>
+<div id="dropbox" class="hero-unit">
     <span class="message">Lim inn eller slipp her</span>
 </div>
 
+<div class="alert alert-success" id="notify">
 
-<dl>
+</div>
+
+
+<ul class="thumbnails">
     #{list items:entries, as:'entry' }
-        <dt>
-            ${entry.name}
-        </dt>
-        <dd>
-            <img src="@{ImageController.displayImage(entry.id)}"/>
-        </dd>
+        <li class="span3">
+            <div class="thumbnail">
+                <img src="@{ImageController.displayImage(entry.id)}"/>
+                <div class="caption">
+                    <h5>${entry.name}</h5>
+                </div>
+            </div>
+        </li>
     #{/list}
-</dl>
+</ul>
