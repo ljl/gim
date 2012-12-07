@@ -18,6 +18,7 @@ public class ImageEntry extends Model
     public String name;
     public Date created;
     public Blob image;
+    public Blob thumb;
 
     public ImageEntry() {
         this.created = new Date( );
@@ -29,6 +30,7 @@ public class ImageEntry extends Model
     {
         InputStream data = new FileInputStream( pic );
         this.image.set( data, MimeTypes.getContentType( pic.getName() ) );
+
     }
 
 }

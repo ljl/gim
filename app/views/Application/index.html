@@ -7,12 +7,14 @@
 
 <h1>gimple</h1>
 <p class="lead">the simple image uploader</p>
-<div id="dropbox" class="hero-unit">
-    <span class="message">Lim inn eller slipp her</span>
-</div>
+<div class="row">
+    <div id="dropbox" class="hero-unit span6" data-websocket="@@{ImageWSController.image()}">
+        <span class="message">Lim inn eller slipp her</span>
+    </div>
 
-<div class="alert alert-success" id="notify">
+    <div id="notify" class="span4">
 
+    </div>
 </div>
 
 
@@ -21,10 +23,14 @@
         <li class="span3">
             <div class="thumbnail">
                 <img src="@{ImageController.displayImage(entry.id)}"/>
-                <div class="caption">
+*{                <div class="caption">
                     <h5>${entry.name}</h5>
-                </div>
+                </div>}*
             </div>
         </li>
     #{/list}
 </ul>
+
+<form action="@{ImageController.deleteAll()}" method="get">
+    <input class="btn btn-danger" type="submit" value="Clear" />
+</form>

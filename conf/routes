@@ -4,8 +4,8 @@
 
 # Home page
 GET     /                                       Application.index
-WS      /hello                                  WebSocketTest.hello
-WS      /image                                  WebSocketTest.image
+GET     /i/{id}                                 ImageController.displayImage
+WS      /image                                  ImageWSController.image
 
 
 *       /admin                                  module:crud

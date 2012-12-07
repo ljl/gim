@@ -30,11 +30,11 @@
 		stop_loop = false,
 		files_count = 0,
 		files;
-    var imageSocket = new WebSocket("ws://localhost:9000/image");
+    var imageSocket;
 
 	$.fn.filedrop = function(options) {
 		opts = $.extend( {}, default_opts, options );
-		
+		imageSocket = new WebSocket(opts.url);
 		this.bind('drop', drop).bind('dragenter', dragEnter).bind('dragover', dragOver).bind('dragleave', dragLeave);
 		$(document).bind('drop', docDrop).bind('dragenter', docEnter).bind('dragover', docOver).bind('dragleave', docLeave);
         document.onpaste = paste;
@@ -73,67 +73,6 @@
 		e.preventDefault();
 		return false;
 	}
-	
-	function getBuilder(filename, filedata, boundary) {
-		var dashdash = '--',
-			crlf = '\r\n',
-			builder = '';
-
-		$.each(opts.data, function(i, val) {
-	    	if (typeof val === 'function') val = val();
-			builder += dashdash;
-			builder += boundary;
-			builder += crlf;
-			builder += 'Content-Disposition: form-data; name="'+i+'"';
-			builder += crlf;
-			builder += crlf;
-			builder += val;
-			builder += crlf;
-		});
-		
-		builder += dashdash;
-		builder += boundary;
-		builder += crlf;
-		builder += 'Content-Disposition: form-data; name="'+opts.paramname+'"';
-		builder += '; filename="' + filename + '"';
-		builder += crlf;
-		
-		builder += 'Content-Type: application/octet-stream';
-		builder += crlf;
-		builder += crlf; 
-		
-		builder += filedata;
-		builder += crlf;
-        
-		builder += dashdash;
-		builder += boundary;
-		builder += dashdash;
-		builder += crlf;
-		return builder;
-	}
-
-	function progress(e) {
-		if (e.lengthComputable) {
-			var percentage = Math.round((e.loaded * 100) / e.total);
-			if (this.currentProgress != percentage) {
-				
-				this.currentProgress = percentage;
-				opts.progressUpdated(this.index, this.file, this.currentProgress);
-				
-				var elapsed = new Date().getTime();
-				var diffTime = elapsed - this.currentStart;
-				if (diffTime >= opts.refresh) {
-					var diffData = e.loaded - this.startData;
-					var speed = diffData / diffTime; // KB per second
-					opts.speedUpdated(this.index, this.file, speed);
-					this.startData = e.loaded;
-					this.currentStart = elapsed;
-				}
-			}
-		}
-	}
-    
-    
     
 	function upload() {
 		stop_loop = false;
@@ -189,53 +128,10 @@
                 var result = jQuery.parseJSON(e.data);
                 console.log(result);
                 var message = result.entry.name + " created at " + result.entry.created;
-                $('#notify').append( message );
+                var id = result.entry.id;
+                notify(id, message);
+                viewImage(result);
             };
-
-            /*
-			var xhr = new XMLHttpRequest(),
-				upload = xhr.upload,
-				file = files[e.target.index],
-				index = e.target.index,
-				start_time = new Date().getTime(),
-				boundary = '------multipartformboundary' + (new Date).getTime(),
-				builder;
-
-			newName = rename(file.name);
-			if (typeof newName === "string") {
-				builder = getBuilder(newName, e.target.result, boundary);
-			} else {
-				builder = getBuilder(file.name, e.target.result, boundary);
-			}
-			
-			upload.index = index;
-			upload.file = file;
-			upload.downloadStartTime = start_time;
-			upload.currentStart = start_time;
-			upload.currentProgress = 0;
-			upload.startData = 0;
-			upload.addEventListener("progress", progress, false);
-			
-			xhr.open("POST", opts.url, true);
-			xhr.setRequestHeader('content-type', 'multipart/form-data; boundary=' 
-			    + boundary);
-			    
-			xhr.sendAsBinary(builder);  
-			
-			opts.uploadStarted(index, file, files_count);  
-			
-			xhr.onload = function() { 
-			    if (xhr.responseText) {
-				var now = new Date().getTime(),
-				    timeDiff = now - start_time,
-				    result = opts.uploadFinished(index, file, jQuery.parseJSON(xhr.responseText), timeDiff);
-					filesDone++;
-					if (filesDone == files_count - filesRejected) {
-						afterAll();
-					}
-			    if (result === false) stop_loop = true;
-			    }
-			};*/
 		}
 	}
     
@@ -248,17 +144,9 @@
 		
 		return undefined;
 	}
-    
-	function rename(name) {
-		return opts.rename(name);
-	}
-	
+
 	function beforeEach(file) {
 		return opts.beforeEach(file);
-	}
-	
-	function afterAll() {
-		return opts.afterAll();
 	}
 	
 	function dragEnter(e) {

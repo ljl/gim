@@ -13,13 +13,9 @@ import play.mvc.Http.WebSocketEvent;
 import play.mvc.Http.WebSocketFrame;
 import play.mvc.WebSocketController;
 
-public class WebSocketTest
+public class ImageWSController
     extends WebSocketController
 {
-    public static void hello( String name )
-    {
-        outbound.send( "Hello %s", name );
-    }
 
     public static void image()
         throws IOException
@@ -52,6 +48,12 @@ public class WebSocketTest
             {
                 Logger.info( "Socket closed!" );
             }
+        }
+    }
+
+    public static void renameImage() {
+        while ( inbound.isOpen() ) {
+
         }
     }
 }
