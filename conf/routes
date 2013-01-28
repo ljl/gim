@@ -5,7 +5,7 @@
 # Home page
 GET     /                                       Application.index
 GET     /i/{id}                                 ImageController.displayImage
-WS      /image                                  ImageWSController.image
+WS      /image                                  ImageController.WebSocket.image
 
 
 *       /admin                                  module:crud

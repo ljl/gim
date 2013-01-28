@@ -8,7 +8,7 @@
 <h1>gimple</h1>
 <p class="lead">the simple image uploader</p>
 <div class="row">
-    <div id="dropbox" class="hero-unit span6" data-websocket="@@{ImageWSController.image()}">
+    <div id="dropbox" class="hero-unit span6" data-websocket="@@{ImageController.WebSocket.image()}">
         <span class="message">Lim inn eller slipp her</span>
     </div>
 
@@ -20,12 +20,10 @@
 
 <ul class="thumbnails">
     #{list items:entries, as:'entry' }
-        <li class="span3">
+        <li class="span3" id="i-${entry.id}">
             <div class="thumbnail">
                 <img src="@{ImageController.displayImage(entry.id)}"/>
-*{                <div class="caption">
-                    <h5>${entry.name}</h5>
-                </div>}*
+*{                <button class="btn btn-mini"><i class="icon-remove"></i></button>}*
             </div>
         </li>
     #{/list}

@@ -1,14 +1,30 @@
 $(function(){
 
+
 	var dropbox = $('#dropbox'),
 		message = $('.message', dropbox);
-	
+
+    var webSocket = new WebSocket(dropbox.attr('data-websocket'));
+
+    webSocket.onmessage = function(e) {
+        var result = jQuery.parseJSON(e.data);
+        console.log(result);
+        var type = result.type;
+        switch(type) {
+            case "image":
+                imageUploaded(result);
+                break;
+            default:
+                break;
+        }
+    };
+
 	dropbox.filedrop({
 		paramname:'pic',
 		
 		maxfiles: 5,
     	maxfilesize: 5,
-		url: dropbox.attr('data-websocket'),
+		ws: webSocket,
 		
     	error: function(err, file) {
 			switch(err) {
@@ -38,6 +54,15 @@ $(function(){
 
 });
 
+// When an image is uploaded
+function imageUploaded(result) {
+    var message = result.entry.name + " created at " + result.entry.created;
+    var id = result.entry.id;
+    notify(id, message);
+    viewImage(result);
+}
+
+// Sends a notification message
 function notify(id, message) {
         var template = '<div class="alert alert-success" id="n-' + id + '">[msg]</div>';
 
@@ -54,12 +79,17 @@ function notify(id, message) {
 
     }
 
+// Displays an image
 function viewImage(i) {
     var template = '<li class="span3" style="opacity:0;" id="i-'+ i.entry.id +'"><div class="thumbnail"><img src="' + i.imageUrl + '" /></div></li>';
-
-    $('ul.thumbnails').prepend(template);
-    setTimeout(function() {
-        $("#i-" + i.entry.id ).addClass('in');
-    }, 1200);
+    var alreadyExists = $('#i-' + i.entry.id ).exists();
+    if (!alreadyExists) {
+        $('ul.thumbnails').prepend(template);
+        setTimeout(function() {
+            $("#i-" + i.entry.id ).addClass('in');
+        }, 1200);
+    }
 }
 
+// Returns true if an element exists
+jQuery.fn.exists = function(){return this.length>0;};

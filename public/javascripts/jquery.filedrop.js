@@ -4,6 +4,7 @@
 	var opts = {},
 		default_opts = {
 			url: '',
+            ws: '',
 			refresh: 1000,
 			paramname: 'userfile',
 			maxfiles: 25,
@@ -34,7 +35,7 @@
 
 	$.fn.filedrop = function(options) {
 		opts = $.extend( {}, default_opts, options );
-		imageSocket = new WebSocket(opts.url);
+		imageSocket = opts.ws;
 		this.bind('drop', drop).bind('dragenter', dragEnter).bind('dragover', dragOver).bind('dragleave', dragLeave);
 		$(document).bind('drop', docDrop).bind('dragenter', docEnter).bind('dragover', docOver).bind('dragleave', docLeave);
         document.onpaste = paste;
@@ -123,16 +124,8 @@
             var file = files[e.target.index];
 
             imageSocket.send(file);
-
-            imageSocket.onmessage = function(e) {
-                var result = jQuery.parseJSON(e.data);
-                console.log(result);
-                var message = result.entry.name + " created at " + result.entry.created;
-                var id = result.entry.id;
-                notify(id, message);
-                viewImage(result);
-            };
 		}
+
 	}
     
 	function getIndexBySize(size) {
@@ -195,17 +188,5 @@
 	}
 	 
 	function empty(){}
-	
-	try {
-		if (XMLHttpRequest.prototype.sendAsBinary) return;
-		XMLHttpRequest.prototype.sendAsBinary = function(datastr) {
-		    function byteValue(x) {
-		        return x.charCodeAt(0) & 0xff;
-		    }
-		    var ords = Array.prototype.map.call(datastr, byteValue);
-		    var ui8a = new Uint8Array(ords);
-		    this.send(ui8a.buffer);
-		}
-	} catch(e) {}
-     
+
 })(jQuery);
