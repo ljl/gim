@@ -29,7 +29,7 @@ $(function(){
     	error: function(err, file) {
 			switch(err) {
 				case 'BrowserNotSupported':
-					showMessage('Your browser does not support HTML5 file uploads!');
+					notify('Your browser does not support HTML5 file uploads!');
 					break;
 				case 'TooManyFiles':
 					alert('Too many files! Please select 5 at most! (configurable)');

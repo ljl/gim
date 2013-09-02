@@ -42,6 +42,7 @@
 	};
 
     function paste(e) {
+        console.log("pasting", e);
         files = itemsToFileArray(e.clipboardData.items);
         if (files === null || files === undefined) {
             opts.error(errors[0]);
